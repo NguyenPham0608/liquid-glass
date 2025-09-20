@@ -10,9 +10,8 @@
 
 <body>
     <div class="glass"
-        style="background-color: rgba(255, 0, 0, 0.1); width:300px; height:200px; border-radius: 60px; box-shadow: 0 0 40px rgba(35, 35, 35, 0.452);">
+        style="width:300px; height:200px; border-radius: 60px; box-shadow: 0 0 40px rgba(35, 35, 35, 0.452), inset 0 0 40px rgba(203, 203, 203, 0.452); top: 50%; left: 50%; transform: translate(-50%, -50%);">
     </div>
-    <div class="glass" style="width:200px; height:150px; border-radius: 100px;"></div>
 
 
     <script>
@@ -69,7 +68,7 @@
                         position: 'fixed',
                         overflow: 'hidden',
                         cursor: 'grab',
-                        backdropFilter: `url(#${this.id}_filter) blur(1.25px) contrast(1.1) brightness(1.05) saturate(1.1)`,
+                        backdropFilter: `url(#${this.id}_filter) blur(1.25px) contrast(1.02) brightness(1.05) saturate(0.8)`,
                         zIndex: 9999,
                         pointerEvents: 'auto'
                     });
@@ -174,7 +173,7 @@
 
                     this.ctx.putImageData(new ImageData(data, w, h), 0, 0);
                     this.feImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.canvas.toDataURL());
-                    this.feDisplacementMap.setAttribute('scale', (maxScale / this.canvasDPI).toString());
+                    this.feDisplacementMap.setAttribute('scale', (maxScale * 2 / this.canvasDPI).toString());
                 }
 
                 appendTo(parent) {
@@ -198,7 +197,7 @@
                     const instance = new LiquidGlass(div, {
                         fragment: (uv, mouse) => {
                             const ix = uv.x - 0.5, iy = uv.y - 0.5;
-                            const distance = Utils.roundedRectSDF(ix, iy, 0.3, 0.2, parseInt(borderRadius, 10) / 160);
+                            const distance = Utils.roundedRectSDF(ix, iy, 0.3, 0.2, parseInt(borderRadius, 10) / 90);
                             const displacement = Utils.smoothStep(0.8, 0, distance - 0.15);
                             const scaled = Utils.smoothStep(0, 1, displacement);
                             return Utils.texture(ix * scaled + 0.5, iy * scaled + 0.5);
