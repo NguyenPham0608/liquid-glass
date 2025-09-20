@@ -9,8 +9,10 @@
 </head>
 
 <body>
-    <div class="glass" style="width:300px; height:200px;"></div>
-    <div class="glass" style="width:200px; height:150px;"></div>
+    <div class="glass"
+        style="background-color: rgba(255, 0, 0, 0.1); width:300px; height:200px; border-radius: 60px; box-shadow: 0 0 40px rgba(35, 35, 35, 0.452);">
+    </div>
+    <div class="glass" style="width:200px; height:150px; border-radius: 100px;"></div>
 
 
     <script>
@@ -67,7 +69,7 @@
                         position: 'fixed',
                         overflow: 'hidden',
                         cursor: 'grab',
-                        backdropFilter: `url(#${this.id}_filter) blur(0.25px) contrast(1.2) brightness(1.05) saturate(1.1)`,
+                        backdropFilter: `url(#${this.id}_filter) blur(1.25px) contrast(1.1) brightness(1.05) saturate(1.1)`,
                         zIndex: 9999,
                         pointerEvents: 'auto'
                     });
@@ -191,10 +193,12 @@
                 const glassDivs = document.querySelectorAll('.glass');
                 window.liquidGlassInstances = [];
                 glassDivs.forEach(div => {
+                    const borderRadius = div.style.borderRadius
+                    console.log(borderRadius)
                     const instance = new LiquidGlass(div, {
                         fragment: (uv, mouse) => {
                             const ix = uv.x - 0.5, iy = uv.y - 0.5;
-                            const distance = Utils.roundedRectSDF(ix, iy, 0.3, 0.2, 0.6);
+                            const distance = Utils.roundedRectSDF(ix, iy, 0.3, 0.2, parseInt(borderRadius, 10) / 160);
                             const displacement = Utils.smoothStep(0.8, 0, distance - 0.15);
                             const scaled = Utils.smoothStep(0, 1, displacement);
                             return Utils.texture(ix * scaled + 0.5, iy * scaled + 0.5);
